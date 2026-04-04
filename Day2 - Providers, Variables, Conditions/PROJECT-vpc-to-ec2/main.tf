@@ -62,8 +62,8 @@ resource "aws_security_group" "WEBSG" {
 
  egress {
     description = "Ingress rule from internet https"
-    from_port = 80
-    to_port = 80
+    from_port = 0
+    to_port = 0
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -79,19 +79,21 @@ resource "aws_s3_bucket" "mybucket" {
 }
 
 resource "aws_instance" "webinstance1" {
-  ami = "ami-0261755bbcb8c4a84"
+  ami = "ami-02f986bab3de34d0d"
+  key_name = "Devops-KeyPair"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.WEBSG.id]
   subnet_id = aws_subnet.sub1.id
-  user_data = base64encode(file("userdata.sh"))
+  user_data = file("userdata.sh")
 }
 
 resource "aws_instance" "webinstance2" {
-  ami = "ami-0261755bbcb8c4a84"
+  ami = "ami-02f986bab3de34d0d"
+  key_name = "Devops-KeyPair"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.WEBSG.id]
   subnet_id = aws_subnet.sub2.id
-  user_data = base64encode(file("userdata1.sh"))
+  user_data = file("userdata1.sh")
 }
 
 #create alb
